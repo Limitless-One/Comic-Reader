@@ -29,7 +29,7 @@ jobs:
         pyinstaller --noconfirm --windowed --name "Comic Reader" main.py
 
     - name: Upload executable as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Comic Reader Windows
         path: dist/Comic Reader/
