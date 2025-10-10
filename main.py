@@ -1,56 +1,27 @@
-"""
-main.py
--------
-Entry point for the Comic Reader application.
-Initializes and launches the main controller with persistent folder selection.
-"""
-
-from __future__ import annotations
 import sys
-from pathlib import Path
-
-from PyQt5.QtCore import Qt, QSettings
-from PyQt5.QtWidgets import QApplication, QFileDialog, QMessageBox, QWidget
-
-# Local import AFTER Qt so sys.path is ready
-from controllers import ComicController
-
-
-def choose_root(parent: QWidget | None) -> Path | None:
-    """Show a modal folder‑picker and return the selected path or None."""
-    folder = QFileDialog.getExistingDirectory(parent, "Select Comics Folder")
-    return Path(folder) if folder else None
+from PyQt5.QtWidgets import QApplication
+from controllers.comic_controller import ComicController
 
 
 def main() -> None:
-    # Create the application instance
+    """
+    Initializes and launches the comic reader application.
+    """
     app = QApplication(sys.argv)
 
-    ctrl: ComicController | None = None
+    # The controller builds the UI and starts the application logic
     try:
-        # Load last used folder from settings, or prompt if missing
-        setting_keys = (ComicController.ORG, ComicController.APP, "last_root")
-        settings = QSettings(*setting_keys[:2])
-        root = Path(settings.value(setting_keys[2])) if settings.value(setting_keys[2]) else None
+        controller = ComicController()
+    except SystemExit as e:
+        print(f"Application exited during startup: {e}")
+        sys.exit(0)
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        # In a real app, you might show a QMessageBox here
+        # from PyQt5.QtWidgets import QMessageBox
+        # QMessageBox.critical(None, "Fatal Error", f"An unexpected error occurred:\n{e}")
+        sys.exit(1)
 
-        if root is None or not root.exists():
-            # Prompt user to select comics folder
-            root = choose_root(None)
-            if root is None:
-                # User canceled — exit cleanly
-                QMessageBox.information(None, "Comic Reader", "No folder selected.")
-                sys.exit(0)
-            settings.setValue(setting_keys[2], str(root))
-
-        # Build the main controller (constructs and displays the UI)
-        ctrl = ComicController(root)
-
-    except Exception as exc:
-        # Handle unexpected errors with a visible alert
-        QMessageBox.critical(None, "Comic Reader – Error", str(exc))
-        raise
-
-    # Start the Qt application loop
     sys.exit(app.exec_())
 
 
