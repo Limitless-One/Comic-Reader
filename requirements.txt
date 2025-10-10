@@ -1,4 +1,7 @@
-pyqt5
-pymupdf
-pillow
-pdf2image
+PyQt5
+natsort
+Pillow
+pillow-avif
+rarfile
+PyMuPDF
+ebooklib
