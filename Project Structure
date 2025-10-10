@@ -1,0 +1,27 @@
+main.py
+CBZ converter.py
+controllers:
+->__init__.py
+->comic_controller.py
+models:
+->__init__.py
+->comic_model.py
+views:
+->__init__.py
+->application_window.py
+->chapter_view.py
+->library_view.py
+->reader_view.py
+->library_manager.py
+->metadata_editor.py
+->settings_dialog.py
+utils:
+->__init__.py
+->archive_handler.py
+->config.py
+->images.py
+->paths.py
+->ui.py
+
+__init__.py files are used for connections, to simplify import statements
+CBZ converter.py is a standalone program I have bundled with the app, to convert comic formats for more efficient storage.
